@@ -1,0 +1,204 @@
+@* Login.cshtml - LA PANTALLA QUE VE EL USUARIO *@
+
+@* LÍNEA 1: Especificar el modelo de datos *@
+@model GSCollect_MVC.Models.ViewModels.LoginViewModel
+
+@* LÍNEA 2: Configurar la página *@
+@{
+    ViewData["Title"] = "Inicio de sesión";
+    Layout = null; // No usar layout general, página independiente
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>GSCollect - Inicio de sesión</title>
+    
+    @* INCLUIR BOOTSTRAP PARA ESTILOS *@
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    
+    @* ESTILOS PERSONALIZADOS PARA EL LOGIN *@
+    <style>
+        /* Fondo de toda la página */
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Tahoma', sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Contenedor principal del login */
+        .login-container {
+            max-width: 400px;
+            width: 90%;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+        
+        /* Header azul del login */
+        .login-header {
+            background-color: #3d7887;
+            color: white;
+            padding: 12px 20px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        /* Cuerpo donde va el formulario */
+        .login-body {
+            padding: 25px;
+        }
+        
+        /* Footer verde del login */
+        .login-footer {
+            background-color: #b3d0cf;
+            padding: 10px 20px;
+            text-align: right;
+            color: #333;
+            font-size: 13px;
+        }
+        
+        /* Botón de login */
+        .btn-login {
+            background-color: #3d7887;
+            color: white;
+            border: none;
+            padding: 8px 25px;
+            border-radius: 4px;
+        }
+        
+        /* Mensajes de error */
+        .error-message {
+            color: #dc3545;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            padding: 8px;
+            border-radius: 4px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    @* ESTRUCTURA DE LA PANTALLA DE LOGIN *@
+    <div class="login-container">
+        
+        @* HEADER DEL LOGIN *@
+        <div class="login-header">
+            Inicio de sesión
+        </div>
+        
+        @* CUERPO CON EL FORMULARIO *@
+        <div class="login-body">
+            
+            @* FORMULARIO QUE SE ENVÍA AL CONTROLLER *@
+            @* asp-action="Login" = Se envía a AuthController.Login() *@
+            <form asp-action="Login" method="post">
+                
+                @* TOKEN DE SEGURIDAD CONTRA ATAQUES *@
+                @Html.AntiForgeryToken()
+                
+                @* MOSTRAR ERRORES SI LOS HAY *@
+                @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ContainsKey(""))
+                {
+                    <div class="error-message">
+                        @ViewData.ModelState[""]?.Errors.FirstOrDefault()?.ErrorMessage
+                    </div>
+                }
+                
+                @* CAMPO: USUARIO *@
+                <div class="row mb-3">
+                    @* asp-for="UserName" = Conecta con LoginViewModel.UserName *@
+                    <label asp-for="UserName" class="col-sm-4 col-form-label">Usuario:</label>
+                    <div class="col-sm-8">
+                        <input asp-for="UserName" class="form-control" autocomplete="username" autofocus />
+                        @* Mostrar errores específicos del campo *@
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                @* CAMPO: CONTRASEÑA *@
+                <div class="row mb-3">
+                    <label asp-for="Password" class="col-sm-4 col-form-label">Contraseña:</label>
+                    <div class="col-sm-8">
+                        <input asp-for="Password" class="form-control" autocomplete="current-password" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                </div>
+
+                @* CAMPO: RECORDAR CONTRASEÑA *@
+                <div class="row mb-3">
+                    <div class="col-sm-8 offset-sm-4">
+                        <div class="form-check">
+                            <input asp-for="RememberMe" class="form-check-input" />
+                            <label asp-for="RememberMe" class="form-check-label">Recordar contraseña</label>
+                        </div>
+                    </div>
+                </div>
+
+                <hr />
+
+                @* BOTÓN PARA ENVIAR EL FORMULARIO *@
+                <div class="text-center mb-3">
+                    <button type="submit" class="btn btn-login">Entrar</button>
+                </div>
+            </form>
+        </div>
+        
+        @* FOOTER CON LA VERSIÓN *@
+        <div class="login-footer">
+            GSCollect v.2025.1.0
+        </div>
+    </div>
+
+    @* SCRIPTS NECESARIOS *@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    
+    @* SCRIPT PERSONALIZADO *@
+    <script>
+        // Cuando la página termine de cargar
+        $(document).ready(function() {
+            // Poner el cursor en el campo usuario
+            $('#UserName').focus();
+            
+            // Permitir enviar con la tecla Enter
+            $(document).keypress(function(e) {
+                if (e.which == 13) { // 13 = tecla Enter
+                    $('form').submit();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+@* 
+¿CÓMO FUNCIONA ESTA VISTA?
+
+1. CARGA DE LA PÁGINA:
+   - Usuario va a localhost:5000
+   - AuthController.Login() [GET] se ejecuta
+   - Se muestra esta vista con un LoginViewModel vacío
+
+2. USUARIO LLENA FORMULARIO:
+   - Escribe usuario y contraseña
+   - Marca o no "recordar contraseña"
+
+3. USUARIO HACE CLIC "ENTRAR":
+   - El formulario se envía a AuthController.Login() [POST]
+   - ASP.NET automáticamente convierte los datos en un LoginViewModel
+   - Se ejecuta la validación y el proceso de login
+
+4. CONEXIONES IMPORTANTES:
+   - asp-for="UserName" se conecta con LoginViewModel.UserName
+   - asp-action="Login" se conecta con AuthController.Login() [POST]
+   - Los errores se muestran automáticamente con asp-validation-for
+*@

@@ -1,8 +1,76 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@* Index.cshtml - PÁGINA PRINCIPAL DESPUÉS DEL LOGIN *@
+
+@{
+    ViewData["Title"] = "Panel Principal";
 }
 
+@* MENSAJE DE BIENVENIDA *@
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Bienvenido a GSCollect</h1>
+    @* @ViewBag.LoggedUser viene del HomeController *@
+    <p>Hola <strong>@ViewBag.LoggedUser</strong>, bienvenido al sistema de cobranza.</p>
+    
+    @* TARJETAS CON LOS MÓDULOS PRINCIPALES *@
+    <div class="row mt-4">
+        
+        @* MÓDULO: CLIENTES *@
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Clientes</h5>
+                    <p class="card-text">Gestionar clientes del sistema</p>
+                    <a href="#" class="btn btn-primary">Ir a Clientes</a>
+                </div>
+            </div>
+        </div>
+        
+        @* MÓDULO: VENTAS *@
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Ventas</h5>
+                    <p class="card-text">Crear y gestionar órdenes de venta</p>
+                    <a href="#" class="btn btn-primary">Nueva Venta</a>
+                </div>
+            </div>
+        </div>
+        
+        @* MÓDULO: ÓRDENES DE COBRO *@
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Órdenes de Cobro</h5>
+                    <p class="card-text">Gestionar cobros pendientes</p>
+                    <a href="#" class="btn btn-primary">Ver Cobros</a>
+                </div>
+            </div>
+        </div>
+        
+        @* MÓDULO: REPORTES *@
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Reportes</h5>
+                    <p class="card-text">Comisiones y reportes del sistema</p>
+                    <a href="#" class="btn btn-primary">Ver Reportes</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+@* 
+¿CÓMO FUNCIONA ESTA VISTA?
+
+1. DATOS DEL CONTROLLER:
+   - HomeController envía ViewBag.LoggedUser
+   - Aquí lo mostramos con @ViewBag.LoggedUser
+
+2. ESTRUCTURA:
+   - Usa Bootstrap para las tarjetas (col-md-3, card, card-body)
+   - Cada tarjeta representa un módulo de la aplicación
+
+3. FUTUROS LINKS:
+   - Los href="#" serán reemplazados por rutas reales
+   - Por ejemplo: href="/Customers" para ir al módulo de clientes
+*@
